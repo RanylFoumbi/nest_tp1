@@ -44,6 +44,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+$```To be able to use mailing module modify the smtp.config file with your own gmail account credential```
 
 ## Test
 

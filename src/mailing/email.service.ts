@@ -1,16 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
-import smtpConfig from './smtp.config';
 
 @Injectable()
 export class EmailService {
+  constructor(
+    private readonly smtpConfig = {
+      host: smtpConfig.host,
+      port: smtpConfig.port,
+      secure: smtpConfig.secure,
+      email: smtpConfig.email,
+      password: smtpConfig.password,
+    },
+  ) {}
+
   private transporter = createTransport({
-    service: smtpConfig.host,
-    port: smtpConfig.port,
-    secure: smtpConfig.secure,
+    service: this.smtpConfig.host,
+    port: this.smtpConfig.port,
+    secure: this.smtpConfig.secure,
     auth: {
-      user: smtpConfig.email,
-      pass: smtpConfig.password,
+      user: this.smtpConfig.email,
+      pass: this.smtpConfig.password,
     },
     tls: {
       rejectUnauthorised: false,
@@ -20,7 +29,7 @@ export class EmailService {
   async sendEmail(to: string, subject: string, content: string) {
     try {
       const mailOptions = {
-        from: smtpConfig.email,
+        from: this.smtpConfig.email,
         to: to,
         subject: subject,
         text: content,
